@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+    <link rel="stylesheet" type="text/css" href="style.css">
+    <title>Vector Calculator</title>
+
+    <script>
+        var dimension = 3;
+
+        var vectors =
+            [
+                new Vector([0, 0, 0]),
+                new Vector([0, 0, 0]),
+                new Vector([0, 0, 0])
+            ]
+
+        var constant = 1;
+
+        class Vector {
+
+            constructor(coordinates) {
+                this.coordinates = coordinates;
+            }
+
+            get length() {
+                var result = 0;
+
+                for (var i = 0; i < this.coordinates.length; i++) {
+                    result += Math.pow(this.coordinates[i], 2);
+                }
+
+                result = Math.sqrt(result);
+            }
+
+            static GetNewFromUser(number_of_coordinates) {
+
+            }
+
+            static DotProduct(vector1, vector2) {
+
+            }
+
+            static Add(vector1, vector2) {
+                var result_coordinates = [];
+                for (var i = 0; i < vector1.coordinates.length; i++)
+                    result_coordinates[i] = vector1.coordinates[i] + vector2.coordinates[i];
+                return new Vector(result_coordinates);
+            }
+
+            static Substract(vector1, vector2) {
+                var result_coordinates = [];
+                for (var i = 0; i < vector1.coordinates.length; i++)
+                    result_coordinates[i] = vector1.coordinates[i] - vector2.coordinates[i];
+                return new Vector(result_coordinates);
+            }
+
+            static Scale(vector, constant) {
+                var result_coordinates = [];
+                for (var i = 0; i < vector1.coordinates.length; i++)
+                    result_coordinates[i] = vector1.coordinates[i] * constant;
+                return new Vector(result_coordinates);
+            }
+        }
+
+
+
+        function ForceRuleOnPrompt(prompt_text, rule) {
+            var input;
+            do {
+                input = prompt(prompt_text);
+            } while (!rule(input))
+
+            return input;
+        }
+
+        function AskForNewDimension() {
+            dimension = parseInt(ForceRuleOnPrompt("Zadej pocet souradnic: ",
+                function (a) {
+                    a = parseInt(a);
+                    return !isNaN(a) && a >= 1 && a <= 10;
+                }
+            ));
+        }
+
+        function AskForNewConstant() {
+            constant = parseFloat(ForceRuleOnPrompt("Zadej konstantu k: ",
+                function (a) {
+                    return !isNaN(parseFloat(a));
+                }
+            ));
+        }
+
+        function AskForNewVector(index) {
+            if (index < 0 || index >= vectors.length) return;
+
+            vectors[index] = Vector.GetNewFromUser(dimension);
+        }
+
+
+    </script>
+</head>
+
+<body>
+    <table>
+        <tr>
+            <td>
+                <!-- Instruction Column -->
+
+            </td>
+
+            <td>
+                <!-- Calculator Column -->
+                <form name="calculator">
+                    <table>
+                        <tr>
+                            <td>
+                                <input type="button">
+
+                            </td>
+                        </tr>
+                    </table>
+                </form>
+            </td>
+        </tr>
+    </table>
+</body>
+
+</html>
