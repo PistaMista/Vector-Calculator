@@ -1,0 +1,59 @@
+
+body
+{
+    display: grid;
+    grid-template-columns: 10vw 30vw 50vw 10vw;
+
+    background-color: bisque;
+}
+
+#calculator table, #instructions
+{
+    padding: 10px;
+    margin: 10px;
+    align-content: center;
+}
+
+#instructions
+{
+    grid-column: 2;
+
+    background-image: url("pictures/sunflower.png");
+    background-size: 20%;
+    background-repeat: no-repeat;
+    background-position: top right;
+    background-color: rgb(207, 159, 0);
+
+
+    border: 5px solid whitesmoke;
+}
+
+#calculator
+{
+    grid-column: 3;
+}
+
+#calculator table
+{
+    border: 5px solid red;
+    background-image: url("pictures/yellow_brick_wall.jpg");
+    
+    width: 100%;
+}
+
+
+article > h1
+{
+    text-align: right;
+}
+
+article > h2 
+{
+    text-align: left;
+}
+
+article > p::first-letter
+{
+    float: left;
+    font-size: 200%;
+}

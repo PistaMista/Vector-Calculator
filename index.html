@@ -7,127 +7,245 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
 
     <link rel="stylesheet" type="text/css" href="style.css">
+    <script src="vector_calculator.js"></script>
+
     <title>Vector Calculator</title>
-
-    <script>
-        var dimension = 3;
-
-        var vectors =
-            [
-                new Vector([0, 0, 0]),
-                new Vector([0, 0, 0]),
-                new Vector([0, 0, 0])
-            ]
-
-        var constant = 1;
-
-        class Vector {
-
-            constructor(coordinates) {
-                this.coordinates = coordinates;
-            }
-
-            get length() {
-                var result = 0;
-
-                for (var i = 0; i < this.coordinates.length; i++) {
-                    result += Math.pow(this.coordinates[i], 2);
-                }
-
-                result = Math.sqrt(result);
-            }
-
-            static GetNewFromUser(number_of_coordinates) {
-
-            }
-
-            static DotProduct(vector1, vector2) {
-
-            }
-
-            static Add(vector1, vector2) {
-                var result_coordinates = [];
-                for (var i = 0; i < vector1.coordinates.length; i++)
-                    result_coordinates[i] = vector1.coordinates[i] + vector2.coordinates[i];
-                return new Vector(result_coordinates);
-            }
-
-            static Substract(vector1, vector2) {
-                var result_coordinates = [];
-                for (var i = 0; i < vector1.coordinates.length; i++)
-                    result_coordinates[i] = vector1.coordinates[i] - vector2.coordinates[i];
-                return new Vector(result_coordinates);
-            }
-
-            static Scale(vector, constant) {
-                var result_coordinates = [];
-                for (var i = 0; i < vector1.coordinates.length; i++)
-                    result_coordinates[i] = vector1.coordinates[i] * constant;
-                return new Vector(result_coordinates);
-            }
-        }
-
-
-
-        function ForceRuleOnPrompt(prompt_text, rule) {
-            var input;
-            do {
-                input = prompt(prompt_text);
-            } while (!rule(input))
-
-            return input;
-        }
-
-        function AskForNewDimension() {
-            dimension = parseInt(ForceRuleOnPrompt("Zadej pocet souradnic: ",
-                function (a) {
-                    a = parseInt(a);
-                    return !isNaN(a) && a >= 1 && a <= 10;
-                }
-            ));
-        }
-
-        function AskForNewConstant() {
-            constant = parseFloat(ForceRuleOnPrompt("Zadej konstantu k: ",
-                function (a) {
-                    return !isNaN(parseFloat(a));
-                }
-            ));
-        }
-
-        function AskForNewVector(index) {
-            if (index < 0 || index >= vectors.length) return;
-
-            vectors[index] = Vector.GetNewFromUser(dimension);
-        }
-
-
-    </script>
 </head>
 
-<body>
-    <table>
-        <tr>
-            <td>
-                <!-- Instruction Column -->
+<body onload="UpdateDisplay()">
 
-            </td>
+    <!-- Instructions -->
+    <article id="instructions">
+        <h1>Kalkulačka</h1>
+        <h2>Část 1. Vektory</h2>
+        <p>
+            Vektor představuje veličinu, která má kromě velikosti i směr. Tím se liší od obyčejného čísla,
+            neboli skaláru, které má pouze velikost.
+            Všechny orientované úsečky, které mají stejný směr a stejnou velikost představují jeden a tentýž
+            vektor.
+        </p>
+        <h2>Část 2. Základní operace s vektory</h2>
+        <p>
+            Součet vektorů je součtem příslušných souřadnic. Pokud odečítate vektory, je to stejné, jako
+            byste přičítali opačný vektor.
+        </p>
+        <p>
+            Násobení vektoru skalárem (reálným číslem) lze geometricky reprezentovat jeho prodloužením nebo
+            zkrácením, popřípadě změnou jeho orientace na opačnou (při násobení záporným číslem).
+            Matematicky jen vynásobíte číslem k všechny jeho souřadnice.
+        </p>
+        <h2>Část 3. Součiny vektorů</h2>
+        <p>
+            Skalární součin definujeme mezi dvěma vektory. Výsledkem skalárního součinu je reálné číslo.
+        </p>
+        <p>
+            Vektorový součin je definován mezi dvěma vektory a to pouze v prostoru. Výsledkem vektorového
+            součinu je vektor.
+        </p>
+        <p>
+            Smíšený součin je definován pouze v prostoru. Jde o spojení vektorového a skalárního součinu.
+            Výsledkem je číslo.
+        </p>
+    </article>
 
-            <td>
-                <!-- Calculator Column -->
-                <form name="calculator">
-                    <table>
-                        <tr>
-                            <td>
-                                <input type="button">
+    <!-- Calculator Column -->
+    <form id="calculator">
+        <table>
+            <section id="input">
+                <tr>
+                    <td>
+                        <input type="button" value="Zadat počet souřadnic" onclick="AskForNewDimension()">
+                    </td>
+                    <td>
+                        <label for="dimension">
+                            Počet souřadnic
+                        </label>
+                    </td>
+                    <td>
+                        <input class="input_display" id="dimension" type="text" readonly>
+                    </td>
+                    <td>
+                        <label for="constant">
+                            Konstanta k
+                        </label>
+                    </td>
+                    <td>
+                        <input class="input_display" id="constant" type="text" readonly>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <input type="button" value="Zadat konstantu k" onclick="AskForNewConstant()">
+                    </td>
+                    <td>
+                        <label for="vector0">
+                            Vektor u
+                        </label>
+                    </td>
+                    <td>
+                        <input class="input_display" id="vector0" type="text" readonly>
+                    </td>
+                    <td>
+                        <label for="vector0_length">
+                            Velikost vektoru u
+                        </label>
+                    </td>
+                    <td>
+                        <input class="input_display" id="vector0_length" type="text" readonly>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <input type="button" value="Zadat vektor u" onclick="AskForVectorModification(0)">
+                    </td>
+                    <td>
+                        <label for="vector1">
+                            Vektor v
+                        </label>
+                    </td>
+                    <td>
+                        <input class="input_display" id="vector1" type="text" readonly>
+                    </td>
+                    <td>
+                        <label for="vector1_length">
+                            Velikost vektoru v
+                        </label>
+                    </td>
+                    <td>
+                        <input class="input_display" id="vector1_length" type="text" readonly>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <input type="button" value="Zadat vektor v" onclick="AskForVectorModification(1)">
+                    </td>
+                    <td>
+                        <label for="vector2">
+                            Vektor w
+                        </label>
+                    </td>
+                    <td>
+                        <input class="input_display" id="vector2" type="text" readonly>
+                    </td>
+                    <td>
+                        <label for="vector2_length">
+                            Velikost vektoru w
+                        </label>
+                    </td>
+                    <td>
+                        <input class="input_display" id="vector2_length" type="text" readonly>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <input type="button" value="Zadat vektor w" onclick="AskForVectorModification(2)">
+                    </td>
+                </tr>
+            </section>
+            <section id="output">
+                <!-- Additions and substractions -->
+                <tr>
+                    <td></td>
+                    <td>
+                        <label for="u+v">u+v=</label>
+                    </td>
+                    <td>
+                        <input class="output_display" id="u+v" data-operation="0+1" type="text" readonly>
+                    </td>
 
-                            </td>
-                        </tr>
-                    </table>
-                </form>
-            </td>
-        </tr>
-    </table>
+                    <td>
+                        <label for="u-v">u-v=</label>
+                    </td>
+                    <td>
+                        <input class="output_display" id="u-v" data-operation="0-1" type="text" readonly>
+                    </td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td>
+                        <label for="v+w">v+w=</label>
+                    </td>
+                    <td>
+                        <input class="output_display" id="v+w" data-operation="1+2" type="text" readonly>
+                    </td>
+
+                    <td>
+                        <label for="v-w">v-w=</label>
+                    </td>
+                    <td>
+                        <input class="output_display" id="v-w" data-operation="1-2" type="text" readonly>
+                    </td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td>
+                        <label for="w+u">w+u=</label>
+                    </td>
+                    <td>
+                        <input class="output_display" id="w+u" data-operation="2+0" type="text" readonly>
+                    </td>
+
+                    <td>
+                        <label for="w-u">w-u=</label>
+                    </td>
+                    <td>
+                        <input class="output_display" id="w-u" data-operation="2-0" type="text" readonly>
+                    </td>
+                </tr>
+
+                <!-- Scales and dot products -->
+                <tr>
+                    <td></td>
+                    <td>
+                        <label for="k.u">k.u=</label>
+                    </td>
+                    <td>
+                        <input class="output_display" id="k.u" data-operation="k.0" type="text" readonly>
+                    </td>
+
+                    <td>
+                        <label for="u.v">u.v=</label>
+                    </td>
+                    <td>
+                        <input class="output_display" id="u.v" data-operation="0.1" type="text" readonly>
+                    </td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td>
+                        <label for="k.v">k.v=</label>
+                    </td>
+                    <td>
+                        <input class="output_display" id="k.v" data-operation="k.1" type="text" readonly>
+                    </td>
+
+                    <td>
+                        <label for="v.w">v.w=</label>
+                    </td>
+                    <td>
+                        <input class="output_display" id="v.w" data-operation="1.2" type="text" readonly>
+                    </td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td>
+                        <label for="k.w">k.w=</label>
+                    </td>
+                    <td>
+                        <input class="output_display" id="k.w" data-operation="k.2" type="text" readonly>
+                    </td>
+
+                    <td>
+                        <label for="w.u">w.u=</label>
+                    </td>
+                    <td>
+                        <input class="output_display" id="w.u" data-operation="2.0" type="text" readonly>
+                    </td>
+                </tr>
+
+            </section>
+        </table>
+    </form>
 </body>
 
 </html>
