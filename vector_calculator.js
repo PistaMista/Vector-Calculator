@@ -126,18 +126,6 @@ class Vector {
     }
 }
 
-var dimension = 3;
-var constant = 2;
-
-var vectors =
-    [
-        new Vector([0, 0, 0]),
-        new Vector([0, 0, 0]),
-        new Vector([0, 0, 0])
-    ]
-
-
-
 function AskForNewDimension() {
     dimension = parseInt(Rules.ForceOnPrompt("Zadej pocet souradnic (nejvice 10): ", Rules.Dimension));
     var resizer_array = new Array(dimension).fill(NaN);
@@ -159,6 +147,16 @@ function AskForVectorModification(index) {
 
     UpdateDisplay();
 }
+
+var dimension = 3;
+var constant = 2;
+
+var vectors =
+    [
+        new Vector([0, 0, 0]),
+        new Vector([0, 0, 0]),
+        new Vector([0, 0, 0])
+    ]
 
 function UpdateDisplay() {
     document.getElementById("dimension").value = dimension;
